@@ -1,0 +1,26 @@
+
+Emouse$comparison <- paste(Emouse$sex, Emouse$age, sep = "_")
+Idents(Emouse) <- "sex"
+obj <- subset(Emouse, ident = "Female")
+Idents(obj) <- "genotype"
+obj <- subset(obj, ident = "E44")
+
+Celltype <- c("Excitatory.Neurons" , "Inhibitory.Neurons", "Astrocytes", "Microglia", "Oligodendrocytes", "Oligodendrocyte.Precursor")
+
+comparison <- c( "Female_06Mo", "Female_12Mo", "Female_18Mo",   "Male_06Mo",   "Male_12Mo",   "Male_18Mo")
+
+library(stringr)
+DEG.list.FDR2 <- NULL
+DEG.list.FDR<- NULL
+for (key in comparison)  { 
+Idents(obj) <- "comparison"
+subcelltype <- subset(obj, idents= key)
+Idents(subcelltype) <- "genotype"
+DEG.list <- FindMarkers(subcelltype, ident.1= "E44", ident.2 ="E33", verbose = TRUE, test.use = "MAST", logfc.threshold = 0.01)
+DEG.list$gene <- row.names(DEG.list)
+DEG.list.FDR <- DEG.list
+DEG.list.FDR$dir<- ifelse(DEG.list.FDR$avg_log2 < 0, "neg","pos")
+#DEG.list.FDR$celltype<- key
+DEG.list.FDR$comparison <- key
+DEG.list.FDR2<- rbind(DEG.list.FDR2, DEG.list.FDR)
+}

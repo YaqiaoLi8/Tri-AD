@@ -55,3 +55,4 @@ table(Emouse$cell_type_gen)
 obj$Seurat_Clusters <- as.numeric(obj$seurat_clusters)
 
 # cluster identity is assigned per cluster based on most abundant cell type in Emouse$cell_type_gen
+# cells labeled as hybrid and negative were removed for downstream analysis

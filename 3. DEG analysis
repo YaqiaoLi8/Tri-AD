@@ -20,6 +20,10 @@ library(Seurat)
 library(stringr)
 
 obj <- Emouse
+Idents(obj) <- "cell_type_gen"
+obj <- subset(obj, idents= c("negative", "hybrid"), invert = TRUE)
+DefaultAssay(obj) <- "SCT"
+
 DEG.list.all <- NULL
 
 for (key in comparison) {
